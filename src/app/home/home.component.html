@@ -1,0 +1,25 @@
+
+<mat-grid-list cols="3" rowHeight="3:1">
+  <mat-grid-tile [rowspan]="3" [colspan]="1">
+    <form>
+      <mat-form-field>
+        <mat-label>Favorite language</mat-label>
+        <mat-select [(ngModel)]="preferredLanguage" name="Current language">
+          <ng-container *ngFor="let language of languageList">
+            <ng-container *ngFor="let isoCode of objectKeys(language.languageIsoCodesWithLocales)">
+              <mat-option [value]="isoCode">{{ language.languageIsoCodesWithLocales[isoCode] }}</mat-option>
+            </ng-container>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+      <p> Selected language: {{preferredLanguage}} </p>
+      <button mat-raised-button (click)="saveLanguage()">Save Language</button>
+    </form>
+  </mat-grid-tile>
+
+  <mat-grid-tile *ngFor="let savedLanguage of savedLanguageList">  
+    <app-language [savedLanguage]="savedLanguage" (languageRemoved)="onLanguageRemoved($event)"> 
+  </app-language>
+  </mat-grid-tile>
+  
+</mat-grid-list>
