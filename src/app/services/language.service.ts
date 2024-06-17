@@ -18,7 +18,7 @@ export class LanguageService {
 
     isoCode = isoCode || window.navigator.language;
 
-    return this.http.get<{ [key: string]: Language }>(this.languageUrl+isoCode).pipe(
+    return this.http.get<Record<string, Language>>(this.languageUrl + isoCode).pipe(
       map(response => Object.keys(response).map(key => ({...response[key], iso: key})))
     );
   }

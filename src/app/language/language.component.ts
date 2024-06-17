@@ -8,11 +8,13 @@ import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-language',
   standalone: true,
   imports: [
+    MatButtonModule,
     FormsModule,
     MatInputModule,
     MatSelectModule,
@@ -34,10 +36,17 @@ export class LanguageComponent {
   constructor() { }
 
   @Output() languageRemoved = new EventEmitter<string>();
+  @Output() languageSet = new EventEmitter<string>();
 
   removeLanguage(): void {
     if (this.savedLanguage) {
       this.languageRemoved.emit(this.savedLanguage.iso);
+    }
+  }
+  setPrefLanguage(): void {
+    if (this.selectedCulture) {
+      this.languageSet.emit(this.selectedCulture);
+      console.log(this.selectedCulture)
     }
   }
 }
