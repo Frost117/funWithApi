@@ -1,28 +1,33 @@
 <mat-grid-list cols="3" rowHeight="3:1">
   <mat-grid-tile [rowspan]="3" [colspan]="1">
 
-    <div>{{preferredLanguage}}</div>
-
     <form>
       <mat-form-field>
         <mat-label>Favorite language</mat-label>
 
-        <input matInput [formControl]="languageCtrl" [matAutocomplete]="auto">
+        <input matInput [formControl]="languageCtrl" [matAutocomplete]="auto" >
         
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedLanguage = $event.option.value" [displayWith]="displayFn">
           <mat-option *ngFor="let language of filteredLanguages | async" [value]="language">
-            {{ language.languageIsoCodesWithLocales[language.iso] }}
+            {{language.iso}}: {{(language.languageIsoCodesWithLocales | keyvalue)[0].value}}
           </mat-option>
         </mat-autocomplete>
+
       </mat-form-field>
-      <p> Selected language: {{languageCtrl.value?.iso}} </p>
+      <br />
       <button mat-raised-button (click)="saveLanguage()">Save Language</button>
+
     </form>
   </mat-grid-tile>
 
-  <mat-grid-tile *ngFor="let savedLanguage of savedLanguageList">  
-    <app-language [savedLanguage]="savedLanguage" (languageRemoved)="onLanguageRemoved($event)" (languageSet)="onLanguagePreferred($event)"> 
-  </app-language>
+  <mat-grid-tile *ngFor="let savedLanguage of savedLanguageList">
+
+    <app-language 
+    [savedLanguage]="savedLanguage"
+    (languageRemoved)="onLanguageRemoved($event)" 
+    (languageSet)="onLanguagePreferred($event)"> 
+    </app-language>
+
   </mat-grid-tile>
   
 </mat-grid-list>

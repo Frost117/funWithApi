@@ -39,16 +39,17 @@ export class HomeComponent implements OnInit{
 
   languageCtrl = new FormControl();
   filteredLanguages!: Observable<Language[]>;
-  languageList: Language[] = []; 
+  languageList: Record<string, Language> = {}; 
   preferredLanguage: string = window.navigator.language;
   savedLanguageList: Language[] = [];
+  selectedLanguage: Language | null = null;
 
   constructor(private languageService: LanguageService) {
-
-    this.languageService.getLanguages(this.preferredLanguage).subscribe((languageList: Language[]) => {
-      this.languageList = languageList;
-    });    
+    this.languageService.getLanguages(this.preferredLanguage).subscribe((languageList: Record<string, Language>) => {
+      this.languageList = languageList
+    })
   }
+  
   objectKeys(obj: any): string[] {
     return Object.keys(obj);
   }
@@ -58,29 +59,30 @@ export class HomeComponent implements OnInit{
     if (savedLanguageList) {
       this.savedLanguageList = JSON.parse(savedLanguageList);
     }
-
+    
     this.filteredLanguages = this.languageCtrl.valueChanges
     .pipe(
       startWith(''),
       map(value => typeof value === 'string' ? value : this._getIsoCodes(value)),
-      map(isoCodes => isoCodes ? this._filterLanguages(isoCodes) : this.languageList.slice())
+      map(isoCodes => isoCodes ? this._filterLanguages(isoCodes) : Object.values(this.languageList))
     );
+    
+    this.languageCtrl.valueChanges.subscribe(value => {
+      this.selectedLanguage = this.savedLanguageList[value]
+    });
   }
 
-  _getIsoCodes(language: Language): string {
-    return language && language.languageIsoCodesWithLocales 
-      ? Object.values(language.languageIsoCodesWithLocales).join(' ') 
-      : '';
-  }
+displayFn(language: Language): string {
+  return language && language.languageIsoCodesWithLocales ? Object.values(language.languageIsoCodesWithLocales)[0] : '';
+}
 
   saveLanguage(): void {
-    const languageToSave = this.languageCtrl.value;
-    if (languageToSave && !this.savedLanguageList.includes(languageToSave)) {
-      this.savedLanguageList.push(languageToSave);
+    if (this.selectedLanguage) {
+      this.savedLanguageList.push(this.selectedLanguage);
       localStorage.setItem('savedLanguageList', JSON.stringify(this.savedLanguageList));
-      this.languageCtrl.reset();
     }
   }
+
   onLanguageRemoved(isoCode: string): void {
     const languageToRemoveIndex = this.savedLanguageList.findIndex(language => 
       Object.keys(language.languageIsoCodesWithLocales).includes(isoCode)
@@ -93,22 +95,22 @@ export class HomeComponent implements OnInit{
 
   onLanguagePreferred(isoCode: string): void {
     this.preferredLanguage = isoCode;
+    /*
     this.languageService.getLanguages(this.preferredLanguage).subscribe((languageList: Language[]) => {
       this.languageList = languageList;
     });
+    */
   }
 
-  displayFn(language: Language): string {
-    return language && language.languageIsoCodesWithLocales[language.iso] ? language.languageIsoCodesWithLocales[language.iso] : '';
+  private _getIsoCodes(language: Language): string {
+    return language.iso;
   }
 
-  private _filterLanguages(isoCodes: string): Language[] {
-    const filterValue = isoCodes.toLowerCase();
-  
-    return this.languageList.filter(language => 
-      Object.values(language.languageIsoCodesWithLocales).some(isoCode => 
-        isoCode.toLowerCase().includes(filterValue)
-      )
+  private _filterLanguages(value: string): Language[] {
+    const filterValue = value.toLowerCase();
+    return Object.values(this.languageList).filter(language => 
+      language.iso.toLowerCase().includes(filterValue) || 
+      Object.values(language.languageIsoCodesWithLocales)[0].toLowerCase().includes(filterValue)
     );
   }
 }

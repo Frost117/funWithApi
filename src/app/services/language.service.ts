@@ -14,12 +14,18 @@ export class LanguageService {
 
   constructor(private http: HttpClient) { }
 
-  getLanguages(isoCode: string): Observable<Language[]>{
+  getLanguages(isoCode: string): Observable<Record<string, Language>>{
 
     isoCode = isoCode || window.navigator.language;
 
     return this.http.get<Record<string, Language>>(this.languageUrl + isoCode).pipe(
-      map(response => Object.keys(response).map(key => ({...response[key], iso: key})))
+      map((response: Record<string, Language>) => {
+        let languageRecord: Record<string, Language> = {};
+        for (let key in response) {
+          languageRecord[key] = {...response[key], iso: key};
+        }
+        return languageRecord;
+      })
     );
   }
 
