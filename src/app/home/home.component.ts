@@ -13,12 +13,15 @@ import { MatDividerModule} from '@angular/material/divider';
 import { MatButtonModule} from '@angular/material/button';
 import { MatAutocompleteModule} from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
+import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
+    CdkDropList, 
+    CdkDrag,
     ReactiveFormsModule,
     MatAutocompleteModule,
     CommonModule,
@@ -90,16 +93,22 @@ displayFn(language: Language): string {
     if (languageToRemoveIndex !== -1) {
       this.savedLanguageList.splice(languageToRemoveIndex, 1);
       localStorage.setItem('savedLanguageList', JSON.stringify(this.savedLanguageList));
+      this.onLanguagePreferred();
     }
   }
 
-  onLanguagePreferred(isoCode: string): void {
-    this.preferredLanguage = isoCode;
-    /*
-    this.languageService.getLanguages(this.preferredLanguage).subscribe((languageList: Language[]) => {
-      this.languageList = languageList;
-    });
-    */
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.savedLanguageList, event.previousIndex, event.currentIndex);
+    localStorage.setItem('savedLanguageList', JSON.stringify(this.savedLanguageList));
+    this.onLanguagePreferred();
+  }
+
+  onLanguagePreferred(): void {
+    if (this.savedLanguageList.length > 0) {
+      this.preferredLanguage = Object.keys(this.savedLanguageList[0].languageIsoCodesWithLocales)[0];
+    } else {
+      this.preferredLanguage = '';
+    }
   }
 
   private _getIsoCodes(language: Language): string {
