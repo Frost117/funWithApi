@@ -1,7 +1,7 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Language } from '../models/languages.model';
-import { Translation } from '../translation';
+import { Language } from '../models/language.model';
+import { Translation } from '../models/translation';
 import {MatCardModule} from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import {FormsModule} from '@angular/forms';
@@ -24,7 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule
   ],
   templateUrl: './language.component.html',
-  styleUrl: './language.component.less'
+  styleUrl: './language.component.css'
 })
 export class LanguageComponent {
   @Input() savedLanguage!: Language;

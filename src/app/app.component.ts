@@ -7,7 +7,8 @@ import { HomeComponent } from './home/home.component';
   standalone: true,
   imports: [
     HomeComponent,
-    RouterModule],
+    RouterModule
+  ],
   template: `
     <main>
       <section>
@@ -15,7 +16,7 @@ import { HomeComponent } from './home/home.component';
       </section>
     </main>
       `,
-  styleUrl: './app.component.less'
+  styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'funWithApi';

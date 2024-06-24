@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LanguageComponent } from '../language/language.component';
 import { LanguageService } from '../services/language.service';
-import { Language } from '../models/languages.model';
+import { Language } from '../models/language.model';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule} from '@angular/material/input';
 import { MatSelectModule} from '@angular/material/select';

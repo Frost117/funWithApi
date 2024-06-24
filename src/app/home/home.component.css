@@ -1,13 +1,15 @@
-    .language-list {
-    width: 500px;
-    max-width: 100%;
-    min-height: 60px;
-    display: block;
-    background: white;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  
+.scrollable-list {
+  overflow-y: auto; /* Enables vertical scrolling */
+  display: block;
+  padding: 10px;
+}
+
+.cdk-drop-list{
+  height: -webkit-fill-available;
+}
+
+
+
   .language-card{
     margin: 1em;
     padding: 20px 10px;
@@ -21,7 +23,7 @@
     background: white;
     font-size: 14px;
   }
-  
+
   .cdk-drag-preview {
     box-sizing: border-box;
     border-radius: 4px;
@@ -29,15 +31,15 @@
                 0 8px 10px 1px rgba(0, 0, 0, 0.14),
                 0 3px 14px 2px rgba(0, 0, 0, 0.12);
   }
-  
+
   .cdk-drag-placeholder {
     opacity: 0;
   }
-  
+    
   .cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
-  
+
   .example-box:last-child {
     border: none;
   }

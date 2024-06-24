@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Language } from '../models/languages.model';
+import { Language } from '../models/language.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 

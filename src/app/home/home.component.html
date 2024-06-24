@@ -20,9 +20,12 @@
     </form>
   </mat-grid-tile>
 
-  <mat-grid-tile>
+  
+  <mat-grid-tile class="scrollable-list" >
 
-    <div cdkDropList (cdkDropListDropped)="drop($event)" class="language-list">
+    <div cdkDropList
+     (cdkDropListDropped)="drop($event)" class="language-list">
+
       <app-language 
         class="language-card"
         *ngFor="let savedLanguage of savedLanguageList; let i = index" 
