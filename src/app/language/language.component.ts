@@ -1,7 +1,7 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Language } from '../models/language.model';
-import { Translation } from '../models/translation';
+import { Translation } from '../models/translation.model';
 import {MatCardModule} from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import {FormsModule} from '@angular/forms';
